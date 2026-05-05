@@ -1,1 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>UrbanDripThrift</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="phone" id="app">
+<div class="toast-el" id="toast"></div>
 
+<!-- SETUP SCREEN -->
+<div class="screen" id="sc-setup">
+  <div class="login-wrap">
+    <div style="font-size:48px;margin-bottom:12px">👑</div>
+    <div class="logo" style="font-size:42px">Setup <em>Owner</em></div>
+    <div class="tagline">First launch — register up to 3 owners</div>
+    <div class="notice-box">
+      <div class="nb-title">⚠️ One-Time Setup</div>
+      <div class="nb-body">Register owners now. Once all 3 slots are filled no new owner can be added.</div>
+    </div>
+    <div class="slots" id="setup-slots">
+      <div class="slot" id="slot0">1</div>
+      <div class="slot" id="slot1">2</div>
+      <div class="slot" id="slot2">3</div>
+    </div>
+    <div class="form-wrap">
+      <div class="fl"><label>Full Name</label><input class="fi" id="setup-name" placeholder="e.g. Aayush"/></div>
+      <div class="fl"><label>Phone Number</label><input class="fi" id="setup-phone" placeholder="98XXXXXXXX" type="tel"/></div>
+      <div class="fl">
+        <label>Password</label>
+        <input class="fi" id="setup-pass" type="password" placeholder="Min 6 characters" oninput="chkStr()"/>
+        <div class="str-bar"><div id="str-fill" class="str-fill"></div></div>
+        <div class="str-lbl" id="str-lbl"></div>
+      </div>
+      <div class="fl"><label>Confirm Password</label><input class="fi" id="setup-pass2" type="password" placeholder="Re-enter password"/></div>
+      <div class="hint" id="setup-hint">👑 Registering <strong>Owner 1</strong> — required</div>
+      <button class="btn btn-rust" onclick="doSetupRegister()">REGISTER OWNER →</button>
+      <div id="setup-done-wrap" style="display:none">
+        <div class="or-line">— or if done —</div>
+        <button class="btn btn-green" onclick="finishSetup()">✓ DONE — OPEN APP</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- LOGIN SCREEN -->
+<div class="screen" id="sc-login">
+  <div class="login-wrap">
+    <div class="logo">Urban<em>Drip</em></div>
+    <div class="tagline">Curated Thrift Marketplace</div>
+    <div id="step-role" style="width:100%">
+      <div class="role-lbl">Who are you?</div>
+      <div class="role-grid">
+        <div class="rcard owner-card" onclick="selectRole('owner')">
+          <span class="rc-icon">👑</span>
+          <div class="rc-title">Owner</div>
+          <div class="rc-sub">Manage inventory, curate & track profit</div>
+          <div class="rc-pill rp-o">BUSINESS</div>
+        </div>
+        <div class="rcard cust-card" onclick="selectRole('customer')">
+          <span class="rc-icon">👕</span>
+          <div class="rc-title">Customer</div>
+          <div class="rc-sub">Browse, buy or consign your clothes</div>
+          <div class="rc-pill rp-c">CONSIGNER</div>
+        </div>
+      </div>
+    </div>
+    <div id="step-form" style="display:none;width:100%">
+      <div id="role-ind" class="role-ind"></div>
+      <div class="auth-switch" id="auth-toggle" style="display:none">
+        <div class="atab atab-on" id="tab-si" onclick="switchTab('si')">Sign In</div>
+        <div class="atab" id="tab-su" onclick="switchTab('su')">Sign Up</div>
+      </div>
+      <div id="name-row" style="display:none">
+        <div class="fl"><label>Full Name</label><input class="fi" id="lf-name" placeholder="Your full name"/></div>
+      </div>
+      <div class="fl"><label id="lbl-phone">Phone Number</label><input class="fi" id="lf-phone" placeholder="98XXXXXXXX" type="tel"/></div>
+      <div id="pass-row">
+        <div class="fl"><label>Password</label><input class="fi" id="lf-pass" type="password" placeholder="••••••••"/></div>
+      </div>
+      <div id="confirm-row" style="display:none">
+        <div class="fl">
+          <label>Confirm Password</label>
+          <input class="fi" id="lf-pass2" type="password" placeholder="Re-enter" oninput="chkLoginStr()"/>
+          <div class="str-bar"><div id="ls-fill" class="str-fill"></div></div>
+          <div class="str-lbl" id="ls-lbl"></div>
+        </div>
+      </div>
+      <div class="hint" id="lf-hint"></div>
+      <button class="btn" id="login-btn" onclick="doLogin()">SIGN IN</button>
+      <button class="btn btn-ghost" onclick="backToRoles()">← Change Role</button>
+    </div>
+  </div>
+</div>
+
+<!-- OWNER HOME -->
+<div class="screen" id="o-home">
+  <div class="sb">
+    <span class="sb-time" id="o-clock">9:41</span>
+    <div style="display:flex;gap:8px;align-items:center">
+      <div class="rbadge rb-o" id="o-badge">👑 Owner</div>
+      <div class="ibtn" onclick="logout()">🚪</div>
+    </div>
+  </div>
+  <div class="topbar"><div class="logo">Urban<em>Drip</em></div>
+    <div style="display:flex;gap:8px">
+      <div class="ibtn">🔍</div>
+      <div class="ibtn" onclick="goOwner('o-alerts');oNav(4)">🔔</div>
+    </div>
+  </div>
+  <div class="sa">
+    <div class="hero hero-o">
+      <div class="htag htag-o">Owner Dashboard</div>
+      <h2>YOUR DRIP<br>EMPIRE.</h2>
+      <p>3 items need curation. 3 items unsold 30+ days.</p>
+      <button class="hbtn hbtn-o" onclick="goOwner('o-curate');oNav(1)">REVIEW QUEUE →</button>
+    </div>
+    <div class="stats4">
+      <div class="stat"><div class="sv">24</div><div class="sl">Active</div></div>
+      <div class="stat"><div class="sv" style="color:#eab308">3</div><div class="sl">Curate</div></div>
+      <div class="stat"><div class="sv" style="color:#ef4444">3</div><div class="sl">Unsold</div></div>
+      <div class="stat"><div class="sv" style="color:#22c55e">8</div><div class="sl">Sold</div></div>
+    </div>
+    <div class="alert-box">
+      <div style="font-size:26px">⚠️</div>
+      <div style="flex:1"><div class="ab-title">3 Items Unsold 30+ Days</div><div class="ab-sub">Return or relist — action required</div></div>
+      <button class="ab-btn" onclick="goOwner('o-inventory');oNav(2);switchInv('unsold')">Review</button>
+    </div>
+    <div class="pills">
+      <div class="pill active">All</div><div class="pill">Hoodies</div>
+      <div class="pill">Tees</div><div class="pill">Denim</div><div class="pill">Shoes</div>
+    </div>
+    <div class="sec-row"><div class="sec-lbl">Featured Drops</div><div class="see-all">See all</div></div>
+    <div class="hrow" id="o-hrow"></div>
+    <div class="sec-row"><div class="sec-lbl">All Listings</div><div class="see-all">View all</div></div>
+    <div class="llist" id="o-llist"></div>
+    <div class="gap"></div>
+  </div>
+</div>
+
+<!-- OWNER CURATE -->
+<div class="screen" id="o-curate">
+  <div class="sb"><span class="sb-time">9:41</span><span></span></div>
+  <div class="topbar" style="padding-bottom:8px">
+    <div class="logo">Curate</div>
+    <div class="badge-pill" id="q-badge">3 Pending</div>
+  </div>
+  <div class="sa">
+    <div class="stats3">
+      <div class="stat"><div class="sv" style="color:#eab308" id="cs-pend">3</div><div class="sl">Pending</div></div>
+      <div class="stat"><div class="sv" style="color:#22c55e">12</div><div class="sl">Accepted</div></div>
+      <div class="stat"><div class="sv" style="color:#ef4444">4</div><div class="sl">Rejected</div></div>
+    </div>
+    <div class="sec-lbl">Review Queue</div>
+    <div id="curate-list"></div>
+    <div class="empty" id="curate-empty" style="display:none">
+      <div class="ei">🎉</div><div class="et">Queue Clear!</div>
+      <div class="es">All items reviewed. New submissions appear here.</div>
+    </div>
+    <div class="gap"></div>
+  </div>
+</div>
+
+<!-- OWNER INVENTORY -->
+<div class="screen" id="o-inventory">
+  <div class="sb"><span class="sb-time">9:41</span><span></span></div>
+  <div class="topbar" style="padding-bottom:8px"><div class="logo">Inventory</div><div class="ibtn">⬇️</div></div>
+  <div class="sa">
+    <div class="inv-tabs">
+      <div class="itab active" id="itab-active" onclick="switchInv('active')">Active<span class="cnt cy2">21</span></div>
+      <div class="itab" id="itab-unsold" onclick="switchInv('unsold')">Unsold<span class="cnt cr2">3</span></div>
+      <div class="itab" id="itab-sold" onclick="switchInv('sold')">Sold<span class="cnt cg2">8</span></div>
+      <div class="itab" id="itab-returned" onclick="switchInv('returned')">Returned</div>
+    </div>
+    <div id="inv-active"></div>
+    <div id="inv-unsold" style="display:none"></div>
+    <div id="inv-sold" style="display:none"></div>
+    <div id="inv-returned" style="display:none">
+      <div class="empty"><div class="ei">📦</div><div class="et">No Returns Yet</div><div class="es">Returned items appear here with full history.</div></div>
+    </div>
+    <div class="gap"></div>
+  </div>
+</div>
+
+<!-- OWNER PROFIT -->
+<div class="screen" id="o-profit">
+  <div class="sb"><span class="sb-time">9:41</span><span></span></div>
+  <div class="topbar" style="padding-bottom:8px"><div class="logo">Profit</div><div class="ibtn">📊</div></div>
+  <div class="sa">
+    <div class="earn-card earn-o">
+      <div class="earn-lbl">My Total Earned</div>
+      <div class="earn-amt">Rs. 4,200</div>
+      <div class="earn-sub">8 sold · May 2026</div>
+      <div class="earn-row">
+        <div class="em"><div class="em-v">Rs.6.8k</div><div class="em-l">Sales</div></div>
+        <div class="em"><div class="em-v">Rs.2.6k</div><div class="em-l">Paid Out</div></div>
+        <div class="em"><div class="em-v">3</div><div class="em-l">Unsold</div></div>
+      </div>
+    </div>
+    <div class="sec-lbl" style="margin-bottom:14px">Deal History</div>
+    <div id="o-deals"></div>
+    <div class="gap"></div>
+  </div>
+</div>
+
+<!-- OWNER ALERTS -->
+<div class="screen" id="o-alerts">
+  <div class="sb"><span class="sb-time">9:41</span><span></span></div>
+  <div class="topbar" style="padding-bottom:8px"><div class="logo">Alerts</div><div class="ibtn">✓✓</div></div>
+  <div class="sa">
+    <div class="sec-lbl" style="margin-bottom:14px">Today</div>
+    <div class="notif-list" id="notif-list"></div>
+    <div class="gap"></div>
+  </div>
+</div>
+
+<!-- OWNER NAV -->
+<nav class="nav" id="owner-nav" style="display:none">
+  <div class="ni active" onclick="goOwner('o-home');oNav(0)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Home
+  </div>
+  <div class="ni" onclick="goOwner('o-curate');oNav(1)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Curate<div class="ndot"></div>
+  </div>
+  <div class="ni" onclick="goOwner('o-inventory');oNav(2)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>Stock<div class="ndot"></div>
+  </div>
+  <div class="ni" onclick="goOwner('o-profit');oNav(3)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>Profit
+  </div>
+  <div class="ni" onclick="goOwner('o-alerts');oNav(4)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>Alerts<div class="ndot" style="display:block"></div>
+  </div>
+</nav>
+
+<!-- CUSTOMER HOME -->
+<div class="screen" id="c-home">
+  <div class="sb">
+    <span class="sb-time" id="c-clock">9:41</span>
+    <div style="display:flex;gap:8px;align-items:center">
+      <div class="rbadge rb-c" id="c-badge">👕 Customer</div>
+      <div class="ibtn" onclick="logout()">🚪</div>
+    </div>
+  </div>
+  <div class="topbar"><div class="logo">Urban<em>Drip</em></div><div class="ibtn">🔍</div></div>
+  <div class="sa">
+    <div class="hero hero-c">
+      <div class="htag htag-c">Zero Investment · Your Portfolio</div>
+      <h2>CONSIGN.<br>EARN. REPEAT.</h2>
+      <p>Got old clothes? We sell them. You earn from every sale — zero cost.</p>
+      <button class="hbtn hbtn-c" onclick="goCustomer('c-consign');cNav(1)">CONSIGN MY CLOTHES →</button>
+    </div>
+    <div class="stats3">
+      <div class="stat"><div class="sv" style="color:#3b82f6" id="c-listed">0</div><div class="sl">Listed</div></div>
+      <div class="stat"><div class="sv" style="color:#22c55e" id="c-sold">0</div><div class="sl">Sold</div></div>
+      <div class="stat"><div class="sv" style="color:#eab308" id="c-earned">Rs.0</div><div class="sl">Earned</div></div>
+    </div>
+    <div class="pills">
+      <div class="pill active">All</div><div class="pill">Hoodies</div>
+      <div class="pill">Tees</div><div class="pill">Denim</div><div class="pill">Shoes</div>
+    </div>
+    <div class="sec-row"><div class="sec-lbl">Browse Drops</div><div class="see-all">See all</div></div>
+    <div class="hrow" id="c-hrow"></div>
+    <div class="sec-row"><div class="sec-lbl">All Listings</div><div class="see-all">View all</div></div>
+    <div class="llist" id="c-llist"></div>
+    <div class="gap"></div>
+  </div>
+</div>
+
+<!-- CUSTOMER CONSIGN -->
+<div class="screen" id="c-consign">
+  <div class="sb"><span class="sb-time">9:41</span><span></span></div>
+  <div class="con-hdr"><h1>SEND YOUR DRIP</h1><p>Upload photos, fill details & choose how to send it.</p></div>
+  <div class="sa">
+    <div class="sec-lbl">Type</div>
+    <div class="who-grid">
+      <div class="who-card active" id="wc-ind" onclick="selWho('ind')">
+        <div class="wc-icon">👤</div><div class="wc-title">Individual</div><div class="wc-sub">Personal clothes</div>
+      </div>
+      <div class="who-card" id="wc-shop" onclick="selWho('shop')">
+        <div class="wc-icon">🏪</div><div class="wc-title">Shop Partner</div><div class="wc-sub">Registered store</div>
+      </div>
+    </div>
+    <div id="prf-ind">
+      <div class="sec-lbl">Your Profile</div>
+      <div class="pcard">
+        <div class="pcard-top">
+          <div class="pav" onclick="document.getElementById('av-ind').click()">
+            <span id="av-ind-ph">😊</span>
+            <img id="av-ind-img" src="" alt="" style="display:none;width:100%;height:100%;object-fit:cover;position:absolute;inset:0">
+            <div class="pav-edit">✏️</div>
+          </div>
+          <div><div class="pcard-name" id="ind-name-display">Your Name</div><div class="pcard-type">Individual Consigner</div></div>
+        </div>
+        <div class="pcard-fields">
+          <div class="pf"><span>👤</span><input placeholder="Full Name" id="pf-name" oninput="document.getElementById('ind-name-display').textContent=this.value||'Your Name'"/></div>
+          <div class="pf"><span>📱</span><input placeholder="Phone Number" type="tel"/></div>
+          <div class="pf"><span>📍</span><input placeholder="Your Area / Location"/></div>
+        </div>
+      </div>
+      <input type="file" id="av-ind" accept="image/*" onchange="loadAv(this,'ind')">
+    </div>
+    <div id="prf-shop" style="display:none">
+      <div class="sec-lbl">Shop Profile</div>
+      <div class="pcard">
+        <div class="pcard-top">
+          <div class="pav" onclick="document.getElementById('av-shop').click()">
+            <span id="av-shop-ph">🏪</span>
+            <img id="av-shop-img" src="" alt="" style="display:none;width:100%;height:100%;object-fit:cover;position:absolute;inset:0">
+            <div class="pav-edit">✏️</div>
+          </div>
+          <div><div class="pcard-name">Shop Name</div><div class="pcard-type">Shop Partner · Token</div></div>
+        </div>
+        <div class="pcard-fields">
+          <div class="pf"><span>🏪</span><input placeholder="Shop Name"/></div>
+          <div class="pf"><span>👤</span><input placeholder="Owner / Contact"/></div>
+          <div class="pf"><span>📱</span><input placeholder="Phone Number" type="tel"/></div>
+          <div class="pf"><span>📍</span><input placeholder="Shop Address"/></div>
+          <div class="pf"><span>🪙</span><input placeholder="Credit Token (optional)"/></div>
+        </div>
+      </div>
+      <input type="file" id="av-shop" accept="image/*" onchange="loadAv(this,'shop')">
+    </div>
+    <div class="divhr"></div>
+    <div class="sec-lbl">Cloth Photos</div>
+    <div class="photo-grid">
+      <div class="pslot main-s" id="ps0" onclick="trigP(0)"><div class="psi">📸</div><div class="psl">MAIN</div></div>
+      <div class="pslot" id="ps1" onclick="trigP(1)"><div class="psi">+</div><div class="psl">BACK</div></div>
+      <div class="pslot" id="ps2" onclick="trigP(2)"><div class="psi">+</div><div class="psl">DETAIL</div></div>
+      <div class="pslot" id="ps3" onclick="trigP(3)"><div class="psi">+</div><div class="psl">TAG</div></div>
+      <div class="pslot" id="ps4" onclick="trigP(4)"><div class="psi">+</div><div class="psl">MORE</div></div>
+    </div>
+    <input type="file" id="pInp" accept="image/*" onchange="handlePhoto(this)">
+    <div class="photo-note">📷 Clear photos sell faster · Min 1 · Max 5</div>
+    <div class="divhr"></div>
+    <div class="sec-lbl">Item Details</div>
+    <div style="padding:0 20px">
+      <div class="fl"><label>Item Name</label><input class="fi" id="item-name" placeholder="e.g. Nike Tech Fleece"/></div>
+      <div style="display:flex;gap:10px">
+        <div class="fl" style="flex:1"><label>Brand</label><input class="fi" id="item-brand" placeholder="Nike..."/></div>
+        <div class="fl" style="flex:1"><label>Size</label><input class="fi" id="item-size" placeholder="M / L / 32"/></div>
+      </div>
+      <div class="fl"><label>Category</label>
+        <select class="fi" id="item-cat">
+          <option>Hoodie / Sweatshirt</option><option>T-Shirt</option>
+          <option>Denim / Pants</option><option>Jacket / Coat</option>
+          <option>Shoes</option><option>Accessories</option>
+        </select>
+      </div>
+      <div class="fl"><label>Condition</label>
+        <div class="cond-sel">
+          <div class="cb" onclick="selC(this)"><div class="cb-n">10</div><div class="cb-l">New</div></div>
+          <div class="cb active" onclick="selC(this)"><div class="cb-n">9</div><div class="cb-l">Like New</div></div>
+          <div class="cb" onclick="selC(this)"><div class="cb-n">8</div><div class="cb-l">Good</div></div>
+          <div class="cb" onclick="selC(this)"><div class="cb-n">7</div><div class="cb-l">Fair</div></div>
+        </div>
+      </div>
+      <div class="fl"><label>Asking Price (Rs.)</label><input class="fi" id="item-price" placeholder="e.g. 1200" type="number"/></div>
+    </div>
+    <div class="divhr"></div>
+    <div class="sec-lbl">How Will You Send It?</div>
+    <div class="pickup-box">
+      <div class="pb-head">📦 Delivery to Us</div>
+      <div class="pb-opts">
+        <div class="pbopt" onclick="selPick(0)"><div class="pb-radio on" id="pbr0"></div><div><div class="pb-lbl">🚶 Drop off at our location</div><div class="pb-desc">Bring it to us directly</div></div></div>
+        <div class="pbopt" onclick="selPick(1)"><div class="pb-radio" id="pbr1"></div><div><div class="pb-lbl">🛵 We'll pick it up</div><div class="pb-desc">We come to your address</div></div></div>
+        <div class="pbopt" onclick="selPick(2)"><div class="pb-radio" id="pbr2"></div><div><div class="pb-lbl">📦 Send via courier</div><div class="pb-desc">Ship to us — return covered if rejected</div></div></div>
+        <div class="pbopt" onclick="selPick(3)"><div class="pb-radio" id="pbr3"></div><div><div class="pb-lbl">🏪 Shop handover (token)</div><div class="pb-desc">Hand at shop with credit token</div></div></div>
+      </div>
+    </div>
+    <button class="btn btn-blue" style="margin:0 20px 20px;width:calc(100% - 40px)" onclick="doSubmit()">SUBMIT MY DRIP →</button>
+  </div>
+</div>
+
+<!-- CUSTOMER SUCCESS -->
+<div class="screen" id="c-success">
+  <div class="sb"><span class="sb-time">9:41</span><span></span></div>
+  <div class="suc-wrap">
+    <div class="suc-icon">🎉</div>
+    <div class="suc-title" style="color:#22c55e">DRIP SUBMITTED!</div>
+    <div class="suc-sub">Your item is in the curation queue. We'll notify you within 24 hours.</div>
+    <div class="suc-card">
+      <div class="sr"><span class="sk">Reference #</span><span class="sv2 mono" style="color:#3b82f6" id="suc-ref">#UDT-0001</span></div>
+      <div class="sr"><span class="sk">Status</span><span class="sv2" style="color:#eab308">Pending Review</span></div>
+      <div class="sr"><span class="sk">Send Method</span><span class="sv2" id="suc-pick">Drop-off</span></div>
+      <div class="sr"><span class="sk">Unsold Policy</span><span class="sv2">30-day return</span></div>
+      <div class="sr"><span class="sk">Your Split</span><span class="sv2" style="color:#22c55e">60% of sale</span></div>
+    </div>
+    <button class="btn btn-blue" style="max-width:280px" onclick="goCustomer('c-myitems');cNav(2)">VIEW MY ITEMS →</button>
+  </div>
+</div>
+
+<!-- CUSTOMER MY ITEMS -->
+<div class="screen" id="c-myitems">
+  <div class="sb"><span class="sb-time">9:41</span><span></span></div>
+  <div class="topbar" style="padding-bottom:8px"><div class="logo">My Items</div><div class="ibtn">🔔</div></div>
+  <div class="sa">
+    <div class="stats2">
+      <div class="stat"><div class="sv" style="color:#3b82f6" id="mi-active">0</div><div class="sl">Active</div></div>
+      <div class="stat"><div class="sv" style="color:#22c55e" id="mi-earned">Rs.0</div><div class="sl">Earned</div></div>
+    </div>
+    <div class="sec-lbl">My Consigned Items</div>
+    <div id="my-items-list"></div>
+    <div id="my-items-empty" style="display:none">
+      <div class="empty"><div class="ei">👕</div><div class="et">No Items Yet</div><div class="es">Consign your first item and track it here.</div>
+        <button class="btn btn-blue" style="max-width:200px;margin:16px auto 0;padding:11px;font-size:13px" onclick="goCustomer('c-consign');cNav(1)">Consign Now →</button>
+      </div>
+    </div>
+    <div class="gap"></div>
+  </div>
+</div>
+
+<!-- CUSTOMER EARNINGS -->
+<div class="screen" id="c-earnings">
+  <div class="sb"><span class="sb-time">9:41</span><span></span></div>
+  <div class="topbar" style="padding-bottom:8px"><div class="logo">Earnings</div><div class="ibtn">📋</div></div>
+  <div class="sa">
+    <div class="earn-card earn-c">
+      <div class="earn-lbl">My Total Earned</div>
+      <div class="earn-amt" id="earn-total">Rs. 0</div>
+      <div class="earn-sub" id="earn-sub">0 items sold</div>
+      <div class="earn-row">
+        <div class="em"><div class="em-v" id="earn-sales">Rs.0</div><div class="em-l">Sale Price</div></div>
+        <div class="em"><div class="em-v">60%</div><div class="em-l">My Split</div></div>
+        <div class="em"><div class="em-v" id="earn-active">0</div><div class="em-l">Active</div></div>
+      </div>
+    </div>
+    <div class="sec-lbl" style="margin-bottom:14px">My Deals</div>
+    <div id="earn-deals"></div>
+    <div id="earn-empty" style="display:none">
+      <div class="empty"><div class="ei">💰</div><div class="et">No Deals Yet</div><div class="es">Once your items sell, earnings appear here.</div></div>
+    </div>
+    <div class="gap"></div>
+  </div>
+</div>
+
+<!-- CUSTOMER NAV -->
+<nav class="nav" id="customer-nav" style="display:none">
+  <div class="ni active" onclick="goCustomer('c-home');cNav(0)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Browse
+  </div>
+  <div class="ni" onclick="goCustomer('c-consign');cNav(1)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>Consign
+  </div>
+  <div class="ni" onclick="goCustomer('c-myitems');cNav(2)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20 7H4a2 2 0 00-2 2v6a2 2 0 002 2h16a2 2 0 002-2V9a2 2 0 00-2-2z"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/></svg>My Items
+  </div>
+  <div class="ni" onclick="goCustomer('c-earnings');cNav(3)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>Earnings
+  </div>
+</nav>
+
+<!-- MODALS -->
+<div id="returnModal" class="modal-ov">
+  <div class="modal">
+    <div class="mhandle"></div>
+    <div class="mtitle">📦 Return to Consigner</div>
+    <div class="msub">Item unsold 30+ days. Choose next action.</div>
+    <div class="ret-opts">
+      <div class="ropt sel" onclick="selRet(this)"><div class="ropt-radio"></div><div><div class="ropt-title">🔄 Return to Consigner</div><div class="ropt-desc">Send back — they keep or retry later.</div></div></div>
+      <div class="ropt" onclick="selRet(this)"><div class="ropt-radio"></div><div><div class="ropt-title">💸 Reduce Price & Relist</div><div class="ropt-desc">Drop price to boost chances.</div></div></div>
+      <div class="ropt" onclick="selRet(this)"><div class="ropt-radio"></div><div><div class="ropt-title">📣 Notify Consigner First</div><div class="ropt-desc">Message them before deciding.</div></div></div>
+    </div>
+    <textarea class="msgbox" placeholder="Add a note to the consigner (optional)..."></textarea>
+    <button class="btn btn-rust" onclick="confirmReturn()">Confirm & Notify Consigner</button>
+    <button class="btn btn-ghost" onclick="closeModal('returnModal')">Cancel</button>
+  </div>
+</div>
+
+<div id="deliveryModal" class="modal-ov">
+  <div class="modal">
+    <div class="mhandle"></div>
+    <div class="mtitle">Delivery Method</div>
+    <div class="msub">How does this item reach the buyer?</div>
+    <div class="del-opts">
+      <div class="dopt" onclick="pickDel('Local Meet-up')"><span class="dicon">🤝</span><div><div class="dn">Local Meet-up</div><div class="dd">Meet buyer in person</div></div></div>
+      <div class="dopt" onclick="pickDel('Self Delivery')"><span class="dicon">🚶</span><div><div class="dn">Self Delivery</div><div class="dd">Drop it off yourself</div></div></div>
+      <div class="dopt" onclick="pickDel('Cash on Delivery')"><span class="dicon">💵</span><div><div class="dn">Cash on Delivery</div><div class="dd">COD via courier</div></div></div>
+      <div class="dopt" onclick="pickDel('Courier')"><span class="dicon">📦</span><div><div class="dn">Courier</div><div class="dd">Prepaid parcel shipping</div></div></div>
+    </div>
+    <button class="btn btn-ghost" onclick="closeModal('deliveryModal')">Cancel</button>
+  </div>
+</div>
+
+</div>
+<script src="app.js"></script>
+</body>
+</html>
