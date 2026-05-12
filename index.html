@@ -1,19 +1,28 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>UrbanDrip Thrift</title>
-    <link rel="stylesheet" href="style.css">
-    </head>
+    <title>Debug UrbanDrip</title>
+    <style>
+        body { background: #111; color: white; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .box { padding: 20px; border: 2px solid #e8440a; border-radius: 10px; text-align: center; }
+    </style>
+</head>
 <body>
 
-    <div id="screen-host"></div>
-    <div id="nav-host"></div>
-    <div id="modal-host"></div>
-    <div id="toast" class="toast-el"></div>
+    <div id="screen-host">
+        <div class="box">
+            <h1>Checking JavaScript...</h1>
+            <p id="test-msg">If this text doesn't change, JS is NOT running.</p>
+        </div>
+    </div>
 
-    <script src="app.js"></script>
-
+    <script>
+        // This is inside the HTML so it CANNOT be lost
+        console.log("Script internal started");
+        const msg = document.getElementById('test-msg');
+        msg.innerText = "✅ SUCCESS! JavaScript is running inside the HTML!";
+        msg.style.color = "#22c55e";
+        document.body.style.background = "#000";
+    </script>
 </body>
 </html>
