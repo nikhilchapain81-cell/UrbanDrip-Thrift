@@ -1,13 +1,3 @@
-/* ADD THIS TO THE TOP */
-body {
-    background-color: red !important;
-}
-
-#screen-host {
-    border: 10px solid blue !important;
-    min-height: 100px;
-}
-/* KEEP ALL YOUR OTHER CODE BELOW THIS */
 :root {
   --bg: #060606;
   --s1: #0f0f0f;
