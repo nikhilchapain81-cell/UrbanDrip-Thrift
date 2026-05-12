@@ -1,3 +1,5 @@
+alert("JS is working!");
+document.body.style.background = "red";
 // ———————————————————————————————————————————————————————————————————
 // URBANDRIP THRIFT v7 — FIXED QUOTES EDITION
 // ———————————————————————————————————————————————————————————————————
