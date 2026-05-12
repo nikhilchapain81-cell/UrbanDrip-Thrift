@@ -1,9 +1,8 @@
 const SPLIT = 0.6;
 const PICK_LABELS = ['Drop-off', 'We Pick Up', 'Courier', 'Shop Handover'];
-const OWNER_WHATSAPP = '9779800000000';
+const OWNER_WHATSAPP = '977980000000';
 const OWNER_INSTAGRAM = 'urbandrip.np';
 const SECRET = 'setup-owner-secret-x9k2';
-
 const tinyHash = (s) => {
   let h = 5381;
   for (let i = 0; i < s.length; i++) h = ((h << 5) + h + s.charCodeAt(i)) | 0;
