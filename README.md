@@ -1,1 +1,0 @@
-# UrbanDrip-Thrift
