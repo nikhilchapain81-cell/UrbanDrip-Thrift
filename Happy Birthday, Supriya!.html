@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Happy Birthday, Supriya!</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;1,9..144,500&family=DM+Sans:wght@400;500&display=swap">
+<style>
+:root{--bg1:#ffe9d6;--bg2:#ffc9c0;--ink:#3a1747;--soft:#7a5a85;--card:rgba(255,255,255,.72);--line:rgba(122,40,90,.18);--gold:#f2a22c;--rose:#d9406a;--glow:rgba(255,190,90,.55);
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg1:#2a1238;--bg2:#5a1f55;--ink:#fff1e0;--soft:#d6bde0;--card:rgba(255,255,255,.08);--line:rgba(255,220,170,.22);--glow:rgba(255,170,70,.35)}}
+:root[data-theme="dark"]{--bg1:#2a1238;--bg2:#5a1f55;--ink:#fff1e0;--soft:#d6bde0;--card:rgba(255,255,255,.08);--line:rgba(255,220,170,.22);--glow:rgba(255,170,70,.35)}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;min-height:100vh;color:var(--ink);font-family:'DM Sans',system-ui,sans-serif;line-height:1.6;overflow-x:hidden;
+background:radial-gradient(900px 500px at 50% 62%,var(--glow),transparent 70%),linear-gradient(180deg,var(--bg1),var(--bg2)) fixed;background-color:var(--bg1)}
+.garland{display:block;width:100%;height:96px}
+header{text-align:center;padding:4px 20px 8px}
+.hb{font-family:'Fraunces',Georgia,serif;font-weight:600;font-size:clamp(1.3rem,5vw,1.8rem);margin:0;color:var(--soft)}
+h1{font-family:'Fraunces',Georgia,serif;font-style:italic;font-weight:600;font-size:clamp(3.4rem,17vw,7rem);line-height:1;margin:2px 0 8px;letter-spacing:-.02em;
+background:linear-gradient(100deg,var(--rose),#f08a3c 55%,var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent;padding:0 .08em .08em}
+.sub{color:var(--soft);max-width:32ch;margin:0 auto}
+main{max-width:520px;margin:0 auto;padding:0 20px 56px;text-align:center}
+.cake{width:min(300px,78vw);height:auto;display:block;margin:14px auto 0;cursor:pointer;filter:drop-shadow(0 18px 24px rgba(90,20,70,.25))}
+.flame{transform-origin:center bottom;transform-box:fill-box;animation:fl .9s ease-in-out infinite alternate;transition:opacity .4s,transform .4s}
+.flame:nth-of-type(2){animation-delay:.25s}.flame:nth-of-type(3){animation-delay:.5s}
+.out .flame{opacity:0;transform:scale(.2);animation:none}
+.smoke{opacity:0;transition:opacity .5s}.out .smoke{opacity:.5}
+@keyframes fl{from{transform:scale(1,1) rotate(-3deg)}to{transform:scale(.88,1.1) rotate(3deg)}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:30px;padding:26px 22px 22px;margin-top:10px;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);min-height:210px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px}
+.wish{font-family:'Fraunces',Georgia,serif;font-style:italic;font-weight:500;font-size:clamp(1.25rem,5.2vw,1.65rem);line-height:1.4;margin:0;animation:in .6s ease both}
+.count{margin:0;color:var(--soft);font-size:.9rem;min-height:1.4em}
+@keyframes in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+button{font:inherit;font-weight:500;border:0;border-radius:999px;padding:14px 30px;min-height:48px;cursor:pointer;color:#3a1747;background:linear-gradient(135deg,#ffc15a,var(--gold));box-shadow:0 8px 20px rgba(242,162,44,.35)}
+button:focus-visible{outline:3px solid var(--rose);outline-offset:3px}
+.sign{margin-top:30px;color:var(--soft)}
+.sign strong{display:block;font-family:'Fraunces',Georgia,serif;font-style:italic;font-size:1.45rem;color:var(--ink);font-weight:600}
+canvas{position:fixed;inset:0;pointer-events:none;width:100%;height:100%}
+@media (prefers-reduced-motion:reduce){.flame,.wish{animation:none}}
+</style>
+</head>
+<body>
+<svg class="garland" viewBox="0 0 400 96" preserveAspectRatio="none" aria-hidden="true">
+<path d="M-5 10 Q100 80 200 44 T405 10" fill="none" stroke="#6f9446" stroke-width="2.5"/>
+<g id="g"></g>
+</svg>
+<header>
+<p class="hb">Happy Birthday</p>
+<h1>Supriya</h1>
+<p class="sub">Today the whole day is yours. Make a wish.</p>
+</header>
+<main>
+<svg class="cake" id="cake" viewBox="0 0 300 250" role="img" aria-label="Birthday cake with three lit candles">
+<ellipse cx="150" cy="226" rx="132" ry="14" fill="#fff" opacity=".7"/>
+<rect x="38" y="140" width="224" height="82" rx="16" fill="#d9406a"/>
+<path d="M38 160q14 18 28 0t28 0 28 0 28 0 28 0 28 0 28 0 14 10v-20q0-16-16-16H54q-16 0-16 16z" fill="#fff4e6"/>
+<g fill="#ffd36e"><circle cx="70" cy="196" r="5"/><circle cx="110" cy="200" r="5"/><circle cx="150" cy="196" r="5"/><circle cx="190" cy="200" r="5"/><circle cx="230" cy="196" r="5"/></g>
+<rect x="80" y="92" width="140" height="56" rx="14" fill="#f08a3c"/>
+<path d="M80 112q12 16 23 0t23 0 23 0 23 0 23 0 5 6v-16q0-12-12-12H92q-12 0-12 12z" fill="#fff4e6"/>
+<g><rect x="106" y="62" width="9" height="32" rx="3" fill="#8f5bd0"/><rect x="145" y="58" width="9" height="36" rx="3" fill="#f2a22c"/><rect x="185" y="62" width="9" height="32" rx="3" fill="#2fa3a0"/></g>
+<g id="flames">
+<path class="flame" d="M110.5 36c7 9 7 17 0 22-7-5-7-13 0-22z" fill="#ffb02e"/>
+<path class="flame" d="M149.5 32c7 9 7 17 0 22-7-5-7-13 0-22z" fill="#ffb02e"/>
+<path class="flame" d="M189.5 36c7 9 7 17 0 22-7-5-7-13 0-22z" fill="#ffb02e"/>
+</g>
+<g class="smoke" stroke="#a58bb0" stroke-width="2" fill="none" stroke-linecap="round"><path d="M110 56q-5-10 2-18"/><path d="M150 52q-5-10 2-18"/><path d="M190 56q-5-10 2-18"/></g>
+</svg>
+<div class="card" aria-live="polite">
+<p class="wish" id="wish">Tap the cake or the button to blow out the candles and open your wishes.</p>
+<p class="count" id="count"></p>
+<button id="btn">Blow out the candles</button>
+</div>
+<p class="sign">With love and the warmest wishes,<strong>from all of us</strong></p>
+</main>
+<canvas id="c"></canvas>
+<script>
+function q(a,b,c,t){return(1-t)*(1-t)*a+2*(1-t)*t*b+t*t*c}
+(function(){var s='',n=19;
+for(var i=0;i<n;i++){var t=i/(n-1),u,x,y;
+if(t<=.5){u=t*2;x=q(-5,100,200,u);y=q(10,80,44,u)}else{u=(t-.5)*2;x=q(200,300,405,u);y=q(44,8,10,u)}
+var a=i%3==0?'#e0506c':i%2?'#f2a22c':'#ee7d1f';
+s+='<g transform="translate('+x+' '+(y+8)+')"><circle r="8" fill="'+a+'"/><circle r="5" fill="#fff" opacity=".25"/><circle r="2.4" fill="#fbd27a"/></g>'}
+document.getElementById('g').innerHTML=s})();
+
+var wishes=[
+"May this year open doors you didn't even know were there.",
+"Wishing you laughter that makes your cheeks hurt and mornings that feel unhurried.",
+"You make the people around you feel seen. May that kindness come right back to you.",
+"May every goal you've been quietly carrying finally find its moment.",
+"Here's to good health, good food, and good company all year long.",
+"You deserve a day full of cake, calls from loved ones, and zero worries.",
+"Happy Birthday, Supriya. The world is brighter with you in it."
+];
+var i=0,w=document.getElementById('wish'),ct=document.getElementById('count'),b=document.getElementById('btn'),cake=document.getElementById('cake');
+function next(){
+ if(i>=wishes.length){i=0;cake.classList.remove('out');w.textContent='The candles are lit again. Blow them out for another round of wishes.';ct.textContent='';b.textContent='Blow out the candles';return}
+ cake.classList.add('out');
+ var el=w.cloneNode(false);el.textContent=wishes[i];w.replaceWith(el);w=el;
+ i++;ct.textContent='Wish '+i+' of '+wishes.length;
+ b.textContent=i===wishes.length?'Light the candles again':'Next wish';
+ boom();
+}
+b.onclick=next;cake.onclick=function(){if(!cake.classList.contains('out'))next()};
+
+var cv=document.getElementById('c'),cx=cv.getContext('2d'),P=[],run=false;
+function size(){cv.width=innerWidth;cv.height=innerHeight}size();addEventListener('resize',size);
+function boom(){
+ if(matchMedia('(prefers-reduced-motion:reduce)').matches)return;
+ var cols=['#f2a22c','#ee7d1f','#e0506c','#8f5bd0','#2fa3a0','#ffd36e'];
+ for(var k=0;k<80;k++)P.push({x:innerWidth/2,y:innerHeight*.4,vx:(Math.random()-.5)*13,vy:-Math.random()*12-2,r:Math.random()*6+4,c:cols[k%6],a:1,rot:Math.random()*6,vr:(Math.random()-.5)*.3});
+ if(!run){run=true;requestAnimationFrame(tick)}
+}
+function tick(){
+ cx.clearRect(0,0,cv.width,cv.height);
+ P=P.filter(function(p){return p.a>0});
+ P.forEach(function(p){p.x+=p.vx;p.y+=p.vy;p.vy+=.3;p.vx*=.99;p.a-=.009;p.rot+=p.vr;
+ cx.save();cx.globalAlpha=Math.max(p.a,0);cx.translate(p.x,p.y);cx.rotate(p.rot);cx.fillStyle=p.c;cx.beginPath();cx.ellipse(0,0,p.r,p.r*.55,0,0,6.3);cx.fill();cx.restore()});
+ if(P.length)requestAnimationFrame(tick);else{run=false;cx.clearRect(0,0,cv.width,cv.height)}
+}
+</script>
+</body>
+</html>
